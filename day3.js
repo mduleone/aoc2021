@@ -1,21 +1,18 @@
 const { data: report } = require('./data/day3');
 
-const countBits = (arrOfStrings) => {
-  const matrixWidth = arrOfStrings[0].length;
-
-  return Array.from({ length: matrixWidth }).reduce((bitCount, _, i) => (
-    [...bitCount, arrOfStrings.reduce(({ one, zero }, str) => {
-      if (str[i] === '0') {
-        return { one, zero: zero + 1 };
-      }
-
-      if (str[i] === '1') {
-        return { one: one + 1, zero };
-      }
-    }, { one: 0, zero: 0 })]
-  ), []);
-}
-
+const countBits = (arrOfBinaryNumbers) => (
+  arrOfBinaryNumbers
+    .reduce(
+      (bitCount, curr) => (
+        bitCount.map(({ one, zero }, i) => (
+          (curr[i] === '0')
+            ? { one, zero: zero + 1 }
+            : { one: one + 1, zero }
+        ))
+      ),
+      Array.from(arrOfBinaryNumbers[0], () => ({ one: 0, zero: 0 })),
+    )
+);
 const countBitsAtIndex = (arrOfStrings, idx) => countBits(arrOfStrings)[idx];
 
 const generatePowerConsumption = (data, leanHeavy) => {
@@ -24,7 +21,7 @@ const generatePowerConsumption = (data, leanHeavy) => {
   const loser = leanHeavy ? '0' : '1';
 
   return bits.map((bit) => bit.one > bit.zero ? winner : loser).join('');
-}
+};
 
 const gamma = generatePowerConsumption(report, true);
 const epsilon = generatePowerConsumption(report, false);
@@ -52,8 +49,7 @@ const generateLifeSupport = (data, leanHeavy) => {
   }
 
   return filteredData;
-
-}
+};
 
 const [oxygen] = generateLifeSupport(report, true);
 const [co2] = generateLifeSupport(report, false);
