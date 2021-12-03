@@ -1,0 +1,19 @@
+{
+  "name": "aoc2021",
+  "version": "1.0.0",
+  "description": "[Advent of Code 2021](https://adventofcode.com/2021)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mduleone/aoc2021.git"
+  },
+  "author": "Matt DuLeone <matt@duleone.com> (https://matt.dule.one/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mduleone/aoc2021/issues"
+  },
+  "homepage": "https://github.com/mduleone/aoc2021#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "isomorphic-fetch": "^3.0.0"
+  }
+}

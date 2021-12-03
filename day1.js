@@ -5,7 +5,7 @@ const countIncreasingValues = (agg, _, i, arr) => {
     return agg;
   }
 
-  if (arr[i - 1] < arr[i]) {
+  if (Number(arr[i - 1]) < Number(arr[i])) {
     return agg + 1;
   }
 
@@ -21,7 +21,7 @@ const generateRunningAverageByN = (arr, n) => (
 
       return arr
         .slice(i - (n - 1), i + 1)
-        .reduce((agg, curr) => agg + curr, 0);
+        .reduce((agg, curr) => agg + Number(curr), 0);
     })
     .filter(el => el)
 )
