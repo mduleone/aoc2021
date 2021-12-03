@@ -1,24 +1,37 @@
 const { directions } = require('./data/day2');
 
-const HORIZONTAL = /forward\s/;
-const MINUS = /up\s/;
-const PLUS = /down\s/;
+const FORWARD = /forward\s(\d+)/;
+const MINUS = /up\s(\d+)/;
+const PLUS = /down\s(\d+)/;
 
-const { x, y, aim } = directions.reduce(({x, y, aim}, direction) => {
-  if (direction.match(HORIZONTAL)) {
-    const inc = Number(direction.replace(HORIZONTAL, ''));
-    return {x: x + inc, y: y + aim * inc, aim};
+const matchDirection = (direction, regex) => {
+  const matches = direction.match(regex);
+  if (!matches) {
+    return null;
   }
 
-  if (direction.match(PLUS)) {
-    const inc = Number(direction.replace(PLUS, ''));
-    return {x, y, aim: aim + inc};
+  const [, number] = matches;
+
+  return Number(number);
+} 
+
+const { x, y, aim } = directions.reduce(({ x, y, aim }, direction) => {
+  const forward = matchDirection(direction, FORWARD);
+  if (typeof forward === 'number') {
+    return { x: x + forward, y: y + aim * forward, aim };
+  }
+  
+  const plus = matchDirection(direction, PLUS);
+  if (typeof plus === 'number') {
+    return { x, y, aim: aim + plus };
+  }
+  
+  const minus = matchDirection(direction, MINUS);
+  if (typeof minus === 'number') {
+    return { x, y, aim: aim - minus };
   }
 
-  if (direction.match(MINUS)) {
-    const inc = Number(direction.replace(MINUS, ''));
-    return {x, y, aim: aim - inc};
-  }
+  return { x, y, aim };
 }, { x: 0, y: 0, aim: 0 });
 
 console.log({ x, y, 'x*y': x * y, aim });
