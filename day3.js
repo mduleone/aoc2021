@@ -15,10 +15,11 @@ const countBits = (arrOfBinaryNumbers) => (
 );
 const countBitsAtIndex = (arrOfStrings, idx) => countBits(arrOfStrings)[idx];
 
-const generatePowerConsumption = (data, leanHeavy) => {
+const generatePowerConsumption = (data, preferOn) => {
   const bits = countBits(data);
-  const winner = leanHeavy ? '1' : '0';
-  const loser = leanHeavy ? '0' : '1';
+  const [winner, loser] = preferOn
+    ? ['1', '0']
+    : ['0', '1'];
 
   return bits.map((bit) => bit.one > bit.zero ? winner : loser).join('');
 };
@@ -30,7 +31,7 @@ const e = parseInt(epsilon, 2);
 
 console.log({ gamma, epsilon, g, e, gxe: g * e });
 
-const generateLifeSupport = (data, leanHeavy) => {
+const generateLifeSupport = (data, preferMostCommon) => {
   let commonBits;
   let filteredData = [...data];
   let idx = 0;
@@ -39,8 +40,8 @@ const generateLifeSupport = (data, leanHeavy) => {
     const mostCommon = commonBits.one >= commonBits.zero ? '1' : '0';
     const leastCommon = commonBits.one >= commonBits.zero ? '0' : '1';
 
-    filteredData = filteredData.filter(el => (
-      leanHeavy
+    filteredData = filteredData.filter((el) => (
+      preferMostCommon
         ? el[idx] === mostCommon
         : el[idx] === leastCommon
     ));
