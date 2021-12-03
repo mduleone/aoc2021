@@ -1,4 +1,4 @@
-const { readings } = require('./data/day1');
+const { data: readings } = require('./data/day1');
 
 const countIncreasingValues = (agg, _, i, arr) => {
   if (i === 0) {

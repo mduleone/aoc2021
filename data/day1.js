@@ -1,4 +1,4 @@
-const readings = [
+const data = [
   131,
   140,
   136,
@@ -2001,4 +2001,4 @@ const readings = [
   5770,
 ];
 
-module.exports = { readings };
+module.exports = { data };

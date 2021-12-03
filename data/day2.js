@@ -1,4 +1,4 @@
-const directions = ['forward 9',
+const data = ['forward 9',
 'forward 9',
 'forward 3',
 'down 2',
@@ -1000,4 +1000,4 @@ const directions = ['forward 9',
 'forward 6',
 ];
 
-module.exports = { directions };
+module.exports = { data };

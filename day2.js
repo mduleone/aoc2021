@@ -1,4 +1,4 @@
-const { directions } = require('./data/day2');
+const { data: directions } = require('./data/day2');
 
 const FORWARD = /forward\s(\d+)/;
 const MINUS = /up\s(\d+)/;
