@@ -3,25 +3,20 @@ const { data: report } = require('./data/day3');
 const countBits = (arrOfBinaryNumbers) => (
   arrOfBinaryNumbers
     .reduce(
-      (bitCount, curr) => (
-        bitCount.map(({ one, zero }, i) => (
-          (curr[i] === '0')
-            ? { one, zero: zero + 1 }
-            : { one: one + 1, zero }
-        ))
-      ),
-      Array.from(arrOfBinaryNumbers[0], () => ({ one: 0, zero: 0 })),
+      (bitCount, curr) => bitCount.map((bit, i) => bit + Number(curr[i])),
+      Array.from(arrOfBinaryNumbers[0], () => 0),
     )
 );
 const countBitsAtIndex = (arrOfStrings, idx) => countBits(arrOfStrings)[idx];
 
 const generatePowerConsumption = (data, preferOn) => {
+  const len = data.length;
   const bits = countBits(data);
   const [winner, loser] = preferOn
     ? ['1', '0']
     : ['0', '1'];
 
-  return bits.map((bit) => bit.one > bit.zero ? winner : loser).join('');
+  return bits.map((bitCount) => bitCount > len - bitCount ? winner : loser).join('');
 };
 
 const gamma = generatePowerConsumption(report, true);
@@ -36,9 +31,10 @@ const generateLifeSupport = (data, preferMostCommon) => {
   let filteredData = [...data];
   let idx = 0;
   while (filteredData.length !== 1) {
+    const len = filteredData.length;
     commonBits = countBitsAtIndex(filteredData, idx);
-    const mostCommon = commonBits.one >= commonBits.zero ? '1' : '0';
-    const leastCommon = commonBits.one >= commonBits.zero ? '0' : '1';
+    const mostCommon = commonBits >= len - commonBits ? '1' : '0';
+    const leastCommon = commonBits >= len - commonBits ? '0' : '1';
 
     filteredData = filteredData.filter((el) => (
       preferMostCommon
