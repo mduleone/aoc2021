@@ -18,7 +18,7 @@ const countOneFourSevenEight = (parsedOutputChars) => (
   )).reduce((sum, x) => sum + x)
 );
 
-const getNumbers = (linePrefix) => {
+const getNumberDict = (linePrefix) => {
   const [one] = linePrefix.filter(el => el.length === 2);
   const [four] = linePrefix.filter(el => el.length === 4);
   const [seven] = linePrefix.filter(el => el.length === 3);
@@ -39,20 +39,19 @@ const getNumbers = (linePrefix) => {
   const [zero] = sixLen.filter(el => el !== nine).filter(el => el.includes(c));
   const [six] = sixLen.filter(el => ![nine, zero].includes(el));
 
-  return [zero, one, two, three, four, five, six, seven, eight, nine];
+  return [zero, one, two, three, four, five, six, seven, eight, nine]
+    .reduce((agg, curr, idx) => ({ ...agg, [curr]: idx }), {});
 };
 
 const getLineOutput = (line) => {
-  const numbers = getNumbers(line.prefix);
-
-  const dict = numbers.reduce((agg, curr, idx) => ({ ...agg, [curr]: idx }), {});
+  const dict = getNumberDict(line.prefix);
 
   return Number(line.output.map(code => dict[code]).join(''));
 };
 
-const getOutputSum = (input) => {
-  return input.map(getLineOutput).reduce((sum, x) => sum + x, 0);
-};
+const getOutputSum = (input) => (
+  input.map(getLineOutput).reduce((sum, x) => sum + x, 0)
+);
 
 console.log({
    test: {
