@@ -12,14 +12,10 @@ const INITIAL_SPAWN_DELAY = 9;
 
 const runSimulation = (input, days = 256) => {
   const spawnsOnDay = Array.from({ length: days }, () => 0);
-  const fishes = Array.from({ length: INITIAL_SPAWN_DELAY }, () => 0);
 
   input.forEach(fishTimer => {
-    fishes[fishTimer] += 1;
     spawnsOnDay[fishTimer] += 1;
   });
-
-  spawnsOnDay[0] = input.length;
 
   for (let i = 1; i < days; i++) {
     if (i + SPAWN_REGEN_DELAY < days) {
@@ -30,7 +26,7 @@ const runSimulation = (input, days = 256) => {
     }
   }
 
-  return spawnsOnDay.reduce((sum, fish) => sum + fish);
+  return spawnsOnDay.reduce((sum, fish) => sum + fish) + input.length;
 };
 
 const parsedData = parseData(data);
