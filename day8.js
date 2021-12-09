@@ -28,8 +28,8 @@ const getNumberDict = (linePrefix) => {
   const sixLen = linePrefix.filter(el => el.length === 6);
   const fiveLen = linePrefix.filter(el => el.length === 5);
 
-  const [nine] = sixLen.filter(el => four.split('').every(pip => el.split('').includes(pip)));
-  const [three] = fiveLen.filter(el => oneSplit.every(pip => el.split('').includes(pip)));
+  const [nine] = sixLen.filter(el => four.split('').every(pip => el.includes(pip)));
+  const [three] = fiveLen.filter(el => oneSplit.every(pip => el.includes(pip)));
   
   const [e] = eight.split('').filter(el => !nine.includes(el));
   const [two] = fiveLen.filter(el => el !== three).filter(el => el.includes(e));
