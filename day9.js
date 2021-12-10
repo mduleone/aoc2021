@@ -6,8 +6,8 @@ const parseData = (input) => (
 
 const getAdjacents = (x, y, grid, horizontal) => (
   horizontal
-    ? [x - 1, x, x + 1].filter(el => el >= 0 && el <= grid[0].length - 1)
-    : [y - 1, y, y + 1].filter(el => el >= 0 && el <= grid.length - 1)
+    ? [x - 1, x, x + 1].filter(el => el >= 0 && el < grid[0].length)
+    : [y - 1, y, y + 1].filter(el => el >= 0 && el < grid.length)
 );
 
 const determineIfLowPoint = (x, y, grid) => {
@@ -46,7 +46,7 @@ const findLowPoints = (input) => {
   input.forEach((row, i) => {
     row.forEach((col, j) => {
       if (determineIfLowPoint(j, i, input)) {
-        lowPoints.push({ point: col, x: j, y: i });
+        lowPoints.push({ point: col, x: j, y: i , toString: () => `${j},${i}` });
       }
     })
   });
@@ -58,39 +58,72 @@ const getRiskLevel = (input) => (
   findLowPoints(input).reduce((sum, { point: t }) => sum + t + 1, 0)
 );
 
-// @TODO: is this signature correct??? I can recurse with this, but do I want to?
-const getBasinFromLowPoint = (lowPoint, grid, currentBasin, checked) => {
-//   const { x, y } = lowPoint;
-//   const horizontalAdjacent = getAdjacents(x, y, grid, true);
-//   const verticalAdjacent = getAdjacents(x, y, grid);
+const arrayUnique = (array) => {
+  const uniqueStrs = Object.values(array).map(el => el.toString()).filter((value, idx, arr) => arr.indexOf(value) === idx);
 
-//   const basinCandidates = [];
-
-//   for (let i = 0; i < verticalAdjacent.length; i++) {
-//     for (let j = 0; j < horizontalAdjacent.length; j++) {
-//       const candidateY = verticalAdjacent[i];
-//       const candidateX = horizontalAdjacent[j];
-//       if (candidateY !== y && candidateX !== x) {
-//         continue;
-//       }
-//       if (candidateY === y && candidateX === x) {
-//         continue;
-//       }
-//       if (grid[candidateY][candidateX] === 9) {
-//         continue;
-//       }
-//       if (!basinCandidates.find(el => el.x === candidateX && el.y === candidateY) && !checked.find(el => el.x === candidateX && el.y === candidateY)) {
-//         basinCandidates.push({ x: candidateX, y: candidateY, point: grid[candidateY][candidateX] });
-//       }
-//     }
-//   }
-//   checked.push(lowPoint);
+  return uniqueStrs.map(str => array.find(el => el.toString() === str));
 }
+
+const getBasinFromLowPoint = (lowPoint, grid, visited = []) => {
+  const { x, y, point } = lowPoint;
+
+  const basinCandidates = [];
+
+  if (visited.some(el => el.x === x && el.y === y)) {
+    return basinCandidates;
+  }
+
+  // up
+  if (y !== 0) {
+    if (grid[y - 1][x] !== 9 && grid[y - 1][x] >= point) {
+      basinCandidates.push({ point: grid[y - 1][x], x, y: y - 1, toString: () => `${x},${y - 1}` });
+    }
+  }
+
+  // right
+  if (x < grid[0].length - 1) {
+    if (grid[y][x + 1] !== 9 && grid[y][x + 1] >= point) {
+      basinCandidates.push({ point: grid[y][x + 1], x: x + 1, y, toString: () => `${x + 1},${y}` });
+    }
+  }
+
+  // down
+  if (y < grid.length - 1) {
+    if (grid[y + 1][x] !== 9 && grid[y + 1][x] >= point) {
+      basinCandidates.push({ point: grid[y + 1][x], x, y: y + 1, toString: () => `${x},${y + 1}` });
+    }
+  }
+
+  // left
+  if (x !== 0) {
+    if (grid[y][x - 1] !== 9 && grid[y][x - 1] >= point) {
+      basinCandidates.push({ point: grid[y][x - 1], x: x - 1, y, toString: () => `${x - 1},${y}` });
+    }
+  }
+
+  return arrayUnique([
+    lowPoint,
+    ...(
+      []
+        .concat(
+          ...basinCandidates.map(candidate => getBasinFromLowPoint(candidate, grid, [...visited, lowPoint]))
+        )
+    )
+  ]);
+};
 
 const getThreeLargestBasins = (grid) => {
   const lowPoints = findLowPoints(grid);
 
-  return lowPoints.map((low) => getBasinFromLowPoint(low, grid, [], [])).sort((a, b) => b - a).slice(0, 3);
+  return lowPoints
+    .map((low, idx, arr) => {
+      const basin = getBasinFromLowPoint(low, grid)
+      console.log(`${idx + 1}/${arr.length}: ${basin.length}`);
+      return basin;
+    })
+    .map(arr => arr.length)
+    .sort((a, b) => b - a)
+    .slice(0, 3);
 }
 
 const getThreeLargestBasinsProduct = (grid) => (
@@ -100,19 +133,13 @@ const getThreeLargestBasinsProduct = (grid) => (
 const parsedTest = parseData(test);
 const parsedData = parseData(data);
 
-// console.log(findLowPoints(parsedTest));
-// console.log(getRiskLevel(parsedTest));
-// console.log(determineIfLowPoint(9, 0, parsedTest));
-
-// console.log(data.map(datum => datum.replace(/9/g, '+')));
-
 console.log({
   test: {
-    a: getRiskLevel(parsedTest), // 15
-    b: getThreeLargestBasinsProduct(parsedTest), // 1134
+    a: getRiskLevel(parsedTest),
+    b: getThreeLargestBasinsProduct(parsedTest),
   },
   data: {
-    a: getRiskLevel(parsedData), // 494
-    b: getThreeLargestBasinsProduct(parsedData), // ??
+    a: getRiskLevel(parsedData),
+    b: getThreeLargestBasinsProduct(parsedData),
   },
-})
+});
