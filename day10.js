@@ -38,24 +38,6 @@ const INCOMPLETE_COST = {
   '>': 4,
 };
 
-/*
-start loop
-  pull next character
-  if no next character
-    consider “incomplete”
-    return “”
-  if open
-    push onto open stack
-  if close
-    pop off open stack
-    if poppedOpen matches close
-      continue
-    else
-      return close
-end loop
-
-*/
-
 const determineFirstCorruptCharacter = (line) => {
   const charArray = line.split('');
   const openStack = [];
