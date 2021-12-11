@@ -1,4 +1,4 @@
-const { data, test } = require('./data/day5');
+const { data, test } = require('./data/day05');
 
 const LINE_SEGMENT_REGEX = /(\d+),(\d+)\s->\s(\d+),(\d+)/;
 

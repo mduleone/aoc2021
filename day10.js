@@ -6,7 +6,6 @@ const OPEN = {
   PAREN: '(',
   CURLY: '{',
 };
-
 const OPEN_CHARS = Object.values(OPEN);
 
 const CLOSE = {
@@ -22,7 +21,7 @@ const OPEN_TO_CLOSE = {
   [OPEN.BRACKET]: CLOSE.BRACKET,
   [OPEN.PAREN]: CLOSE.PAREN,
   [OPEN.CURLY]: CLOSE.CURLY,
-}
+};
 
 const CORRUPT_COST = {
   ')': 3,
@@ -30,7 +29,6 @@ const CORRUPT_COST = {
   '}': 1197,
   '>': 25137,
 };
-
 const INCOMPLETE_COST = {
   ')': 1,
   ']': 2,

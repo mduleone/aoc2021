@@ -1,4 +1,4 @@
-const { data: readings } = require('./data/day1');
+const { data: readings } = require('./data/day01');
 
 const countIncreasingValues = (agg, _, i, arr) => {
   if (i === 0) {
@@ -24,10 +24,10 @@ const generateRunningAverageByN = (arr, n) => (
         .reduce((agg, curr) => agg + Number(curr), 0);
     })
     .filter(el => el)
-)
+);
 
 const straight = readings.reduce(countIncreasingValues, 0);
 
-const byThrees = generateRunningAverageByN(readings, 3).reduce(countIncreasingValues, 0)
+const byThrees = generateRunningAverageByN(readings, 3).reduce(countIncreasingValues, 0);
 
 console.log({ straight, byThrees });

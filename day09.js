@@ -1,4 +1,4 @@
-const { data, test } = require('./data/day9');
+const { data, test } = require('./data/day09');
 
 const parseData = (input) => (
   input.map((line) => line.split('').map(Number))
@@ -48,7 +48,7 @@ const findLowPoints = (input) => {
       if (determineIfLowPoint(j, i, input)) {
         lowPoints.push({ point: col, x: j, y: i , toString: () => `${j},${i}` });
       }
-    })
+    });
   });
 
   return lowPoints;
@@ -62,7 +62,7 @@ const arrayUnique = (array) => {
   const uniqueStrs = Object.values(array).map(el => el.toString()).filter((value, idx, arr) => arr.indexOf(value) === idx);
 
   return uniqueStrs.map(str => array.find(el => el.toString() === str));
-}
+};
 
 const getBasinFromLowPoint = (lowPoint, grid, visited = []) => {
   const { x, y, point } = lowPoint;
@@ -108,7 +108,7 @@ const getBasinFromLowPoint = (lowPoint, grid, visited = []) => {
         .concat(
           ...basinCandidates.map(candidate => getBasinFromLowPoint(candidate, grid, [...visited, lowPoint]))
         )
-    )
+    ),
   ]);
 };
 
@@ -124,7 +124,7 @@ const getThreeLargestBasins = (grid) => {
     .map(arr => arr.length)
     .sort((a, b) => b - a)
     .slice(0, 3);
-}
+};
 
 const getThreeLargestBasinsProduct = (grid) => (
   getThreeLargestBasins(grid).reduce((prod, x) => prod * x, 1)

@@ -1,11 +1,11 @@
-const { data, test } = require('./data/day7');
+const { data, test } = require('./data/day07');
 
 const parseData = (input) => {
   const [str] = input;
   const nums = str.split(',');
 
   return nums.map(Number);
-}
+};
 
 const parsedData = parseData(data);
 const parsedTest = parseData(test);
@@ -13,7 +13,6 @@ const parsedTest = parseData(test);
 const sumOneToN = num => (num * (num + 1) / 2);
 
 const determineFuelConsumptionByIdx = (input, cell, static) => {
-  
   return input.map(x => {
     const distance = Math.abs(x - cell);
 

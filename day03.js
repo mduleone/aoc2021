@@ -1,4 +1,4 @@
-const { data: report } = require('./data/day3');
+const { data: report } = require('./data/day03');
 
 const countBits = (arrOfBinaryNumbers) => (
   arrOfBinaryNumbers

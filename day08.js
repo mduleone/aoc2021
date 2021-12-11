@@ -1,4 +1,4 @@
-const { data, test } = require('./data/day8');
+const { data, test } = require('./data/day08');
 
 const sortString = str => str.split('').sort().join('');
 

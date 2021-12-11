@@ -1,4 +1,4 @@
-const { data, test } = require('./data/day4');
+const { data, test } = require('./data/day04');
 
 const parseInput = (input) => {
   const [numberPulls, ...combinedBoards] = input;
@@ -16,7 +16,7 @@ const parseInput = (input) => {
   }, []);
 
   return { numberPulls: numberPulls.split(',').map(Number), boards };
-}
+};
 
 const checkBoardForWinner = (called, board) => {
   if (board.some((row) => row.every(cell => called.includes(cell)))) {

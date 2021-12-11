@@ -1,11 +1,11 @@
-const { data, test } = require('./data/day6');
+const { data, test } = require('./data/day06');
 
 const parseData = (input) => {
   const [str] = input;
   const nums = str.split(',');
 
   return nums.map(Number);
-}
+};
 
 const SPAWN_REGEN_DELAY = 7;
 const INITIAL_SPAWN_DELAY = 9;
@@ -26,7 +26,8 @@ const runSimulation = (input, days = 256) => {
     }
   }
 
-  return spawnsOnDay.reduce((sum, fish) => sum + fish) + input.length;
+  spawnsOnDay.unshift(input.length);
+  return spawnsOnDay.reduce((sum, fish) => sum + fish);
 };
 
 const parsedData = parseData(data);
