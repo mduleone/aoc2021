@@ -22,7 +22,7 @@ const runSimulation = (input, days = 256) => {
       spawnsOnDay[i + SPAWN_REGEN_DELAY] += spawnsOnDay[i];
     }
     if (i + INITIAL_SPAWN_DELAY < days) {
-      spawnsOnDay[i + INITIAL_SPAWN_DELAY] += spawnsOnDay[i]
+      spawnsOnDay[i + INITIAL_SPAWN_DELAY] += spawnsOnDay[i];
     }
   }
 
