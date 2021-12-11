@@ -17,19 +17,23 @@ const runSimulation = (input, days = 256) => {
     spawnsOnDay[fishTimer] += 1;
   });
 
-  for (let i = 1; i < days; i++) {
-    if (i + SPAWN_REGEN_DELAY < days) {
+  spawnsOnDay.unshift(input.length);
+  for (let i = 1; i < days + 1; i++) {
+    if (i + SPAWN_REGEN_DELAY < days + 1) {
       spawnsOnDay[i + SPAWN_REGEN_DELAY] += spawnsOnDay[i];
     }
-    if (i + INITIAL_SPAWN_DELAY < days) {
+    if (i + INITIAL_SPAWN_DELAY < days + 1) {
       spawnsOnDay[i + INITIAL_SPAWN_DELAY] += spawnsOnDay[i];
     }
   }
 
-  spawnsOnDay.unshift(input.length);
   return spawnsOnDay.reduce((sum, fish) => sum + fish);
 };
 
 const parsedData = parseData(data);
+const parsedTest = parseData(test);
 
-console.log({ eighty: runSimulation(parsedData, 80), twoFiftySix: runSimulation(parsedData) });
+console.log({
+  test: { eighty: runSimulation(parsedTest, 80), twoFiftySix: runSimulation(parsedTest) },
+  data: { eighty: runSimulation(parsedData, 80), twoFiftySix: runSimulation(parsedData) },
+});
