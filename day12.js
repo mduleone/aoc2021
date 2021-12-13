@@ -8,28 +8,19 @@ const BIG = Symbol('big');
 const START = 'start';
 const END = 'end';
 
-const getNodeSize = (node) => {
-  return node.match(smallRegex) ? SMALL : BIG;
-}
-const isStart = (node) => node === START;
-const isEnd = (node) => node === END;
-
 class Node {
   constructor(node) {
     this.name = node;
     this.edges = [];
-  }
-
-  get type() {
-    return getNodeSize(this.name);
+    this.type = this.name.match(smallRegex) ? SMALL : BIG;
   }
 
   isStart = () => {
-    return isStart(this.name);
+    return this.name === START;
   };
 
   isEnd = () => {
-    return isEnd(this.name);
+    return this.name === END;
   };
 
   addEdge = (target) => {
@@ -62,11 +53,7 @@ const parseGraph = (input) => {
   vertices.forEach(vertex => {
     const edgePartners = rawEdges
       .filter(edge => edge.has(vertex.name))
-      .map(edge => {
-        const [partner] = Array.from(edge.values()).filter(n => n !== vertex.name)
-
-        return partner;
-      });
+      .map(edge => Array.from(edge.values()).find(n => n !== vertex.name));
 
     edgePartners.forEach((partner) => vertex.addEdge(vertices.find(v => v.name === partner)));
   });
@@ -76,8 +63,8 @@ const parseGraph = (input) => {
 
 const alreadyVisitedSmallTwice = (fromArray) => {
   const smalls = fromArray.filter(n => !n.isStart() && n.type === SMALL).map(n => n.name);
-  const isUnique = smalls.some((el, idx, arr) => arr.indexOf(el) !== idx);
-  return isUnique;
+
+  return smalls.some((el, idx, arr) => arr.indexOf(el) !== idx);
 };
 
 const dfs = (node, from, paths) => {
@@ -91,7 +78,7 @@ const dfs = (node, from, paths) => {
 
   node.edges.forEach((edgeNode) => {
     if (
-      edgeNode.name === START
+      edgeNode.isStart()
         || edgeNode.type === SMALL && from.find(el => el.name === edgeNode.name)
     ) {
       return;
@@ -114,11 +101,9 @@ const dfsRevisit = (node, from, paths) => {
 
   node.edges.forEach((edgeNode) => {
     if (
-      edgeNode.name === START ||
-      (
-        edgeNode.type === SMALL && from.find(el => el.name === edgeNode.name)
+      edgeNode.isStart()
+        || edgeNode.type === SMALL && from.find(el => el.name === edgeNode.name)
           && alreadyVisitedSmallTwice(from)
-      )
       ) {
       return;
     }
@@ -130,9 +115,7 @@ const dfsRevisit = (node, from, paths) => {
 };
 
 const traverseGraph = (vertices, allowRevisitSingleSmall = false) => {
-  const paths = [];
-  const visited = [];
-  const startNode = vertices.find(v => v.name === START);
+  const startNode = vertices.find(v => v.isStart());
   
   return allowRevisitSingleSmall ? dfsRevisit(startNode, [], []) : dfs(startNode, [], []);
 };
@@ -159,4 +142,4 @@ console.log({
     paths: traverseGraph(dataGraph).map(path => path.join(', ')).length,
     pathsRevisit: traverseGraph(dataGraph, true).map(path => path.join(', ')).length,
   },
-})
+});
