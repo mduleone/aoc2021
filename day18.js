@@ -1,4 +1,4 @@
-const { test, data } = require('./data/day18.js');
+const { test, data } = require('./data/day18');
 
 const maybeExplode = (str) => {
   let idx = 0;
